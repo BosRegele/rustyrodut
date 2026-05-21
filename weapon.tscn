@@ -1,14 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://b3bjafbdo6mo2"]
 
-[ext_resource type="Script" path="res://weapon.gd" id="1"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_gun"]
-size = Vector3(0.05, 0.08, 0.25)
-
-[sub_resource type="StandardMaterial3D" id="Mat_gun"]
-albedo_color = Color(0.25, 0.25, 0.25, 1)
-metallic = 0.8
-roughness = 0.3
+[ext_resource type="Script" uid="uid://ejcss32jvjl7" path="res://weapon.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bsildnwvb3vcm" path="res://low-poly_taurus_raging_judge.glb" id="2_o2wld"]
+[ext_resource type="AudioStream" path="res://soundreality-gun-shot-341144.mp3" id="3_sound"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_flash"]
 radius = 0.04
@@ -17,28 +11,30 @@ height = 0.08
 [sub_resource type="StandardMaterial3D" id="Mat_flash"]
 shading_mode = 0
 albedo_color = Color(1, 0.82, 0.2, 1)
-emission_enabled = true
-emission = Color(1, 0.82, 0.2, 1)
-emission_energy_multiplier = 5.0
 
-[node name="Weapon" type="Node3D"]
+[node name="Weapon" type="Node3D" unique_id=1357212239]
 script = ExtResource("1")
 
-[node name="GunBody" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0, -0.05)
-mesh = SubResource("BoxMesh_gun")
-surface_material_override/0 = SubResource("Mat_gun")
+[node name="GunBody" type="MeshInstance3D" parent="." unique_id=473939865]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05)
 
-[node name="MuzzlePoint" type="Marker3D" parent="."]
-position = Vector3(0, 0, -0.18)
+[node name="Sketchfab_Scene" parent="GunBody" unique_id=606992284 instance=ExtResource("2_o2wld")]
+transform = Transform3D(-4.371139e-11, 0, 0.001, 0, 0.001, 0, -0.001, 0, -4.371139e-11, -0.002342701, -0.087209955, 0.12617008)
 
-[node name="FlashLight" type="OmniLight3D" parent="MuzzlePoint"]
+[node name="MuzzlePoint" type="Marker3D" parent="." unique_id=1933906506]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.18)
+
+[node name="FlashLight" type="OmniLight3D" parent="MuzzlePoint" unique_id=639053472]
 visible = false
 light_color = Color(1, 0.82, 0.2, 1)
 light_energy = 3.0
 omni_range = 2.0
 
-[node name="FlashMesh" type="MeshInstance3D" parent="MuzzlePoint"]
+[node name="FlashMesh" type="MeshInstance3D" parent="MuzzlePoint" unique_id=365809773]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_flash")
 surface_material_override/0 = SubResource("Mat_flash")
+
+[node name="FireSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_sound")
