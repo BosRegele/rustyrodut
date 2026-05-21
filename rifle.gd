@@ -1,6 +1,6 @@
 extends Node3D
 
-const FIRE_RATE := 0.09
+const FIRE_RATE := 0.18
 const BULLET_SCENE = preload("res://bullet.tscn")
 
 var _can_fire := true
@@ -87,7 +87,7 @@ func _reload() -> void:
 func _play_shot_sound() -> void:
 	var s := AudioStreamPlayer3D.new()
 	s.stream = fire_sound.stream
-	s.volume_db = -8.0
+	s.volume_db = -18.0
 	add_child(s)
 	s.play()
 	s.finished.connect(s.queue_free)
