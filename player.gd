@@ -6,11 +6,22 @@ const GRAVITY := 20.0
 const MOUSE_SENS := 0.002
 
 @onready var camera: Camera3D = $Camera3D
+@onready var pistol: Node3D = $Camera3D/Weapon
+@onready var rifle: Node3D = $Camera3D/Rifle
 
 var _pitch := 0.0
+var _current_slot := 1
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	_equip(1)
+
+func _equip(slot: int) -> void:
+	_current_slot = slot
+	pistol.visible = (slot == 1)
+	pistol.process_mode = PROCESS_MODE_INHERIT if slot == 1 else PROCESS_MODE_DISABLED
+	rifle.visible = (slot == 2)
+	rifle.process_mode = PROCESS_MODE_INHERIT if slot == 2 else PROCESS_MODE_DISABLED
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -19,6 +30,11 @@ func _input(event: InputEvent) -> void:
 		camera.rotation.x = _pitch
 	if event.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_1:
+			_equip(1)
+		elif event.keycode == KEY_2:
+			_equip(2)
 
 func _physics_process(delta: float) -> void:
 	var dir := Vector3.ZERO

@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b3bjafbdo6mo2" path="res://weapon.tscn" id="2"]
 [ext_resource type="AudioStream" uid="uid://cyeltuornye2d" path="res://EmptySound.mp3" id="3_hqtel"]
 [ext_resource type="AudioStream" uid="uid://k5pd5kdqlgrg" path="res://ReloadSound.mp3" id="4_sweqy"]
+[ext_resource type="PackedScene" path="res://rifle.tscn" id="5_rifle"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.35
@@ -61,3 +62,8 @@ stream = ExtResource("3_hqtel")
 
 [node name="ReloadSound" type="AudioStreamPlayer3D" parent="Camera3D/Weapon" unique_id=594113727]
 stream = ExtResource("4_sweqy")
+
+[node name="Rifle" parent="Camera3D" instance=ExtResource("5_rifle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.2, -0.5)
+visible = false
+process_mode = 4
