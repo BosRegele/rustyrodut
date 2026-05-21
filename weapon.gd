@@ -11,6 +11,7 @@ var total_ammo := 30
 var is_reloading := false
 
 @onready var muzzle: Marker3D = $MuzzlePoint
+@onready var ray: RayCast3D = $"../RayCast3D"
 @onready var fire_sound: AudioStreamPlayer3D = $FireSound
 @onready var empty_sound: AudioStreamPlayer3D = $EmptySound
 @onready var reload_sound: AudioStreamPlayer3D = $ReloadSound
@@ -40,10 +41,21 @@ func _fire() -> void:
 	_update_ammo_ui()
 	fire_sound.play()
 
+	# Gaseste punctul tinta din centrul crosshair-ului
+	ray.force_raycast_update()
+	var aim_point: Vector3
+	if ray.is_colliding():
+		aim_point = ray.get_collision_point()
+	else:
+		aim_point = ray.global_position + (-ray.global_transform.basis.z * 300.0)
+
+	# Spawneaza glontul din muzzle, indreptat spre tinta
 	var bullet := BULLET_SCENE.instantiate()
 	get_tree().current_scene.add_child(bullet)
-	bullet.global_transform = muzzle.global_transform
-	bullet.linear_velocity = -muzzle.global_transform.basis.z * 60.0
+	bullet.global_position = muzzle.global_position
+	var direction := (aim_point - muzzle.global_position).normalized()
+	bullet.look_at(muzzle.global_position + direction)
+	bullet.linear_velocity = direction * 150.0
 
 	flash_light.visible = true
 	flash_mesh.visible = true
