@@ -1,156 +1,201 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=20 format=3]
 
-[ext_resource type="Script" path="res://main.gd" id="1_main"]
-[ext_resource type="PackedScene" path="res://player.tscn" id="2_player"]
-[ext_resource type="PackedScene" path="res://target.tscn" id="3_target"]
+[ext_resource type="PackedScene" path="res://player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://target.tscn" id="2_target"]
 
-[sub_resource type="RectangleShape2D" id="1_wall_h"]
-size = Vector2(3000, 40)
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 1
+background_color = Color(0.12, 0.15, 0.22, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.5, 0.55, 0.65, 1)
+ambient_light_energy = 0.5
 
-[sub_resource type="RectangleShape2D" id="2_wall_v"]
-size = Vector2(40, 2000)
+[sub_resource type="BoxShape3D" id="Floor_shape"]
+size = Vector3(100, 1, 100)
 
-[sub_resource type="RectangleShape2D" id="3_obs1"]
-size = Vector2(120, 80)
+[sub_resource type="BoxMesh" id="Floor_mesh"]
+size = Vector3(100, 1, 100)
 
-[sub_resource type="RectangleShape2D" id="4_obs2"]
-size = Vector2(80, 120)
+[sub_resource type="StandardMaterial3D" id="Floor_mat"]
+albedo_color = Color(0.14, 0.17, 0.2, 1)
+roughness = 0.9
 
-[sub_resource type="RectangleShape2D" id="5_obs3"]
-size = Vector2(200, 60)
+[sub_resource type="BoxShape3D" id="WallNS_shape"]
+size = Vector3(100, 6, 1)
 
-[sub_resource type="RectangleShape2D" id="6_obs4"]
-size = Vector2(60, 100)
+[sub_resource type="BoxMesh" id="WallNS_mesh"]
+size = Vector3(100, 6, 1)
 
-[node name="Main" type="Node2D"]
-script = ExtResource("1_main")
+[sub_resource type="BoxShape3D" id="WallEW_shape"]
+size = Vector3(1, 6, 100)
 
-[node name="Walls" type="Node2D" parent="."]
+[sub_resource type="BoxMesh" id="WallEW_mesh"]
+size = Vector3(1, 6, 100)
 
-[node name="WallTop" type="StaticBody2D" parent="Walls"]
+[sub_resource type="StandardMaterial3D" id="Wall_mat"]
+albedo_color = Color(0.28, 0.32, 0.38, 1)
+
+[sub_resource type="BoxShape3D" id="Obs1_shape"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="Obs1_mesh"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="Obs2_shape"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxMesh" id="Obs2_mesh"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="Obs3_shape"]
+size = Vector3(4, 1.5, 0.8)
+
+[sub_resource type="BoxMesh" id="Obs3_mesh"]
+size = Vector3(4, 1.5, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="Obs_mat"]
+albedo_color = Color(0.38, 0.28, 0.2, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.785, 0.524, 0)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Fill" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.3, 3.665, 0)
+light_energy = 0.4
+
+[node name="Floor" type="StaticBody3D" parent="."]
 collision_layer = 2
-position = Vector2(1500, 20)
+position = Vector3(0, -0.5, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallTop"]
-shape = SubResource("1_wall_h")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("Floor_shape")
 
-[node name="Visual" type="Polygon2D" parent="Walls/WallTop"]
-polygon = PackedVector2Array(-1500, -20, 1500, -20, 1500, 20, -1500, 20)
-color = Color(0.38, 0.43, 0.48, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("Floor_mesh")
+surface_material_override/0 = SubResource("Floor_mat")
 
-[node name="WallBottom" type="StaticBody2D" parent="Walls"]
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="WallN" type="StaticBody3D" parent="Walls"]
 collision_layer = 2
-position = Vector2(1500, 1980)
+position = Vector3(0, 3, -50)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallBottom"]
-shape = SubResource("1_wall_h")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallN"]
+shape = SubResource("WallNS_shape")
 
-[node name="Visual" type="Polygon2D" parent="Walls/WallBottom"]
-polygon = PackedVector2Array(-1500, -20, 1500, -20, 1500, 20, -1500, 20)
-color = Color(0.38, 0.43, 0.48, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallN"]
+mesh = SubResource("WallNS_mesh")
+surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="WallLeft" type="StaticBody2D" parent="Walls"]
+[node name="WallS" type="StaticBody3D" parent="Walls"]
 collision_layer = 2
-position = Vector2(20, 1000)
+position = Vector3(0, 3, 50)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallLeft"]
-shape = SubResource("2_wall_v")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallS"]
+shape = SubResource("WallNS_shape")
 
-[node name="Visual" type="Polygon2D" parent="Walls/WallLeft"]
-polygon = PackedVector2Array(-20, -1000, 20, -1000, 20, 1000, -20, 1000)
-color = Color(0.38, 0.43, 0.48, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallS"]
+mesh = SubResource("WallNS_mesh")
+surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="WallRight" type="StaticBody2D" parent="Walls"]
+[node name="WallE" type="StaticBody3D" parent="Walls"]
 collision_layer = 2
-position = Vector2(2980, 1000)
+position = Vector3(50, 3, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallRight"]
-shape = SubResource("2_wall_v")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallE"]
+shape = SubResource("WallEW_shape")
 
-[node name="Visual" type="Polygon2D" parent="Walls/WallRight"]
-polygon = PackedVector2Array(-20, -1000, 20, -1000, 20, 1000, -20, 1000)
-color = Color(0.38, 0.43, 0.48, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallE"]
+mesh = SubResource("WallEW_mesh")
+surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="Obstacles" type="Node2D" parent="."]
-
-[node name="Obs1" type="StaticBody2D" parent="Obstacles"]
+[node name="WallW" type="StaticBody3D" parent="Walls"]
 collision_layer = 2
-position = Vector2(900, 800)
+position = Vector3(-50, 3, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacles/Obs1"]
-shape = SubResource("3_obs1")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallW"]
+shape = SubResource("WallEW_shape")
 
-[node name="Visual" type="Polygon2D" parent="Obstacles/Obs1"]
-polygon = PackedVector2Array(-60, -40, 60, -40, 60, 40, -60, 40)
-color = Color(0.42, 0.32, 0.22, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallW"]
+mesh = SubResource("WallEW_mesh")
+surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="Obs2" type="StaticBody2D" parent="Obstacles"]
+[node name="Obstacles" type="Node3D" parent="."]
+
+[node name="Obs1" type="StaticBody3D" parent="Obstacles"]
 collision_layer = 2
-position = Vector2(1250, 600)
+position = Vector3(5, 1, -6)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacles/Obs2"]
-shape = SubResource("4_obs2")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs1"]
+shape = SubResource("Obs1_shape")
 
-[node name="Visual" type="Polygon2D" parent="Obstacles/Obs2"]
-polygon = PackedVector2Array(-40, -60, 40, -60, 40, 60, -40, 60)
-color = Color(0.42, 0.32, 0.22, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs1"]
+mesh = SubResource("Obs1_mesh")
+surface_material_override/0 = SubResource("Obs_mat")
 
-[node name="Obs3" type="StaticBody2D" parent="Obstacles"]
+[node name="Obs2" type="StaticBody3D" parent="Obstacles"]
 collision_layer = 2
-position = Vector2(1850, 1150)
+position = Vector3(-7, 1.5, 4)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacles/Obs3"]
-shape = SubResource("5_obs3")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs2"]
+shape = SubResource("Obs2_shape")
 
-[node name="Visual" type="Polygon2D" parent="Obstacles/Obs3"]
-polygon = PackedVector2Array(-100, -30, 100, -30, 100, 30, -100, 30)
-color = Color(0.42, 0.32, 0.22, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs2"]
+mesh = SubResource("Obs2_mesh")
+surface_material_override/0 = SubResource("Obs_mat")
 
-[node name="Obs4" type="StaticBody2D" parent="Obstacles"]
+[node name="Obs3" type="StaticBody3D" parent="Obstacles"]
 collision_layer = 2
-position = Vector2(1100, 1320)
+position = Vector3(12, 0.75, 9)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacles/Obs4"]
-shape = SubResource("6_obs4")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs3"]
+shape = SubResource("Obs3_shape")
 
-[node name="Visual" type="Polygon2D" parent="Obstacles/Obs4"]
-polygon = PackedVector2Array(-30, -50, 30, -50, 30, 50, -30, 50)
-color = Color(0.42, 0.32, 0.22, 1)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs3"]
+mesh = SubResource("Obs3_mesh")
+surface_material_override/0 = SubResource("Obs_mat")
 
-[node name="Targets" type="Node2D" parent="."]
+[node name="Targets" type="Node3D" parent="."]
 
-[node name="Target1" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(700, 700)
+[node name="Target1" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(-8, 0.9, -10)
 
-[node name="Target2" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(1050, 450)
+[node name="Target2" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(-3, 0.9, -14)
 
-[node name="Target3" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(1380, 720)
+[node name="Target3" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(4, 0.9, -11)
 
-[node name="Target4" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(1720, 520)
+[node name="Target4" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(9, 0.9, -7)
 
-[node name="Target5" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(820, 1220)
+[node name="Target5" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(-12, 0.9, 6)
 
-[node name="Target6" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(1160, 880)
+[node name="Target6" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(-4, 0.9, 5)
 
-[node name="Target7" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(1680, 920)
+[node name="Target7" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(7, 0.9, 10)
 
-[node name="Target8" parent="Targets" instance=ExtResource("3_target")]
-position = Vector2(2050, 760)
+[node name="Target8" parent="Targets" instance=ExtResource("2_target")]
+position = Vector3(15, 0.9, -2)
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
-position = Vector2(1500, 1000)
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector3(0, 2, 0)
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="Controls" type="Label" parent="HUD"]
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 680.0
+offset_right = 720.0
 offset_bottom = 44.0
-text = "WASD / Sageti: Miscare  |  Mouse: Tinta  |  Click Stanga: Trage"
+text = "WASD: Miscare  |  Mouse: Privit  |  Click Stanga: Trage  |  Spatiu: Saritura  |  ESC: Cursor"
