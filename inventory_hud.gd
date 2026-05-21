@@ -62,7 +62,7 @@ func _build() -> void:
 		hbox.add_child(outer)
 
 		# ── Icon arma ────────────────────────────────────────────────────────
-		var icon_path := WEAPON_ICONS[i]
+		var icon_path: String = WEAPON_ICONS[i]
 		if ResourceLoader.exists(icon_path):
 			var tex_rect := TextureRect.new()
 			tex_rect.texture = load(icon_path)
