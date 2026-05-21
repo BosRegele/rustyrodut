@@ -43,7 +43,7 @@ func _build() -> void:
 	add_child(root)
 
 	var hbox := HBoxContainer.new()
-	hbox.set_anchors_preset(Control.PRESET_BOTTOM_CENTER)
+	hbox.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	hbox.offset_left   = -total_width / 2.0
 	hbox.offset_right  =  total_width / 2.0
 	hbox.offset_bottom = -MARGIN_BOTTOM
