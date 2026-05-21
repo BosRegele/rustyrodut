@@ -43,6 +43,7 @@ func _fire() -> void:
 	var bullet := BULLET_SCENE.instantiate()
 	get_tree().current_scene.add_child(bullet)
 	bullet.global_transform = muzzle.global_transform
+	bullet.linear_velocity = -muzzle.global_transform.basis.z * 60.0
 
 	flash_light.visible = true
 	flash_mesh.visible = true

@@ -5,7 +5,6 @@ const SPEED := 60.0
 var _lifetime := 4.0
 
 func _ready() -> void:
-	linear_velocity = -global_transform.basis.z * SPEED
 	body_entered.connect(_on_body_entered)
 
 func _process(delta: float) -> void:
