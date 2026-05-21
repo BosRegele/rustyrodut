@@ -38,8 +38,7 @@ func _fire() -> void:
 	_can_fire = false
 	current_ammo -= 1
 	_update_ammo_ui()
-	if not fire_sound.playing:
-		fire_sound.play()
+	_play_shot_sound()
 
 	ray.force_raycast_update()
 	var aim_point: Vector3
@@ -84,6 +83,14 @@ func _reload() -> void:
 	total_ammo -= to_reload
 	is_reloading = false
 	_update_ammo_ui()
+
+func _play_shot_sound() -> void:
+	var s := AudioStreamPlayer3D.new()
+	s.stream = fire_sound.stream
+	s.volume_db = -8.0
+	add_child(s)
+	s.play()
+	s.finished.connect(s.queue_free)
 
 func _update_ammo_ui() -> void:
 	if ammo_label:
