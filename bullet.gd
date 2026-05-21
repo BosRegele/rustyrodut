@@ -1,13 +1,16 @@
-extends Area2D
+extends RigidBody3D
 
-const SPEED := 700.0
+const SPEED := 60.0
+
+var _lifetime := 4.0
 
 func _ready() -> void:
+	linear_velocity = -global_transform.basis.z * SPEED
 	body_entered.connect(_on_body_entered)
 
 func _process(delta: float) -> void:
-	position += Vector2(cos(rotation), sin(rotation)) * SPEED * delta
-	if not get_viewport_rect().grow(200.0).has_point(global_position):
+	_lifetime -= delta
+	if _lifetime <= 0:
 		queue_free()
 
 func _on_body_entered(body: Node) -> void:

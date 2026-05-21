@@ -1,6 +1,8 @@
 extends Node3D
 
 const FIRE_RATE := 0.3
+const BULLET_SCENE = preload("res://bullet.tscn")
+
 var _can_fire := true
 
 var max_mag_size := 6
@@ -8,7 +10,7 @@ var current_ammo := 6
 var total_ammo := 30
 var is_reloading := false
 
-@onready var ray: RayCast3D = $"../RayCast3D"
+@onready var muzzle: Marker3D = $MuzzlePoint
 @onready var fire_sound: AudioStreamPlayer3D = $FireSound
 @onready var empty_sound: AudioStreamPlayer3D = $EmptySound
 @onready var reload_sound: AudioStreamPlayer3D = $ReloadSound
@@ -38,11 +40,9 @@ func _fire() -> void:
 	_update_ammo_ui()
 	fire_sound.play()
 
-	ray.force_raycast_update()
-	if ray.is_colliding():
-		var body := ray.get_collider()
-		if body.has_method("hit"):
-			body.hit()
+	var bullet := BULLET_SCENE.instantiate()
+	get_tree().current_scene.add_child(bullet)
+	bullet.global_transform = muzzle.global_transform
 
 	flash_light.visible = true
 	flash_mesh.visible = true
