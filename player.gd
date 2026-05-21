@@ -8,6 +8,7 @@ const MOUSE_SENS := 0.002
 @onready var camera: Camera3D = $Camera3D
 @onready var pistol: Node3D = $Camera3D/Weapon
 @onready var rifle: Node3D = $Camera3D/Rifle
+@onready var inv_hud = $InventoryHUD
 
 var _pitch := 0.0
 var _current_slot := 1
@@ -22,6 +23,7 @@ func _equip(slot: int) -> void:
 	pistol.process_mode = PROCESS_MODE_INHERIT if slot == 1 else PROCESS_MODE_DISABLED
 	rifle.visible = (slot == 2)
 	rifle.process_mode = PROCESS_MODE_INHERIT if slot == 2 else PROCESS_MODE_DISABLED
+	inv_hud.update_active(slot)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

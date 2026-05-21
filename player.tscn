@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://cyeltuornye2d" path="res://EmptySound.mp3" id="3_hqtel"]
 [ext_resource type="AudioStream" uid="uid://k5pd5kdqlgrg" path="res://ReloadSound.mp3" id="4_sweqy"]
 [ext_resource type="PackedScene" path="res://rifle.tscn" id="5_rifle"]
+[ext_resource type="Script" path="res://inventory_hud.gd" id="6_invhud"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.35
@@ -67,3 +68,6 @@ stream = ExtResource("4_sweqy")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.2, -0.5)
 visible = false
 process_mode = 4
+
+[node name="InventoryHUD" type="CanvasLayer" parent="."]
+script = ExtResource("6_invhud")
