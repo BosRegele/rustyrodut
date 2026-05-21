@@ -21,8 +21,10 @@ func _equip(slot: int) -> void:
 	_current_slot = slot
 	pistol.visible = (slot == 1)
 	pistol.process_mode = PROCESS_MODE_INHERIT if slot == 1 else PROCESS_MODE_DISABLED
+	pistol.get_node("UI").visible = (slot == 1)
 	rifle.visible = (slot == 2)
 	rifle.process_mode = PROCESS_MODE_INHERIT if slot == 2 else PROCESS_MODE_DISABLED
+	rifle.get_node("UI").visible = (slot == 2)
 	inv_hud.update_active(slot)
 
 func _input(event: InputEvent) -> void:

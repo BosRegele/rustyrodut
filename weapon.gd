@@ -20,6 +20,7 @@ var is_reloading := false
 @onready var flash_mesh: MeshInstance3D = $MuzzlePoint/FlashMesh
 
 func _ready() -> void:
+	fire_sound.volume_db = -8.0
 	_update_ammo_ui()
 
 func _input(event: InputEvent) -> void:
@@ -39,7 +40,8 @@ func _fire() -> void:
 	_can_fire = false
 	current_ammo -= 1
 	_update_ammo_ui()
-	fire_sound.play()
+	if not fire_sound.playing:
+		fire_sound.play()
 
 	# Gaseste punctul tinta din centrul crosshair-ului
 	ray.force_raycast_update()
