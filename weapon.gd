@@ -13,6 +13,8 @@ var is_reloading := false
 @onready var empty_sound: AudioStreamPlayer3D = $EmptySound
 @onready var reload_sound: AudioStreamPlayer3D = $ReloadSound
 @onready var ammo_label: Label = $UI/AmmoLabel
+@onready var flash_light: OmniLight3D = $MuzzlePoint/FlashLight
+@onready var flash_mesh: MeshInstance3D = $MuzzlePoint/FlashMesh
 
 func _ready() -> void:
 	_update_ammo_ui()
@@ -35,9 +37,23 @@ func _fire() -> void:
 	current_ammo -= 1
 	_update_ammo_ui()
 	fire_sound.play()
+
 	ray.force_raycast_update()
-	# ... (aici poți păstra restul logicii tale de flash)
-	await get_tree().create_timer(FIRE_RATE).timeout
+	if ray.is_colliding():
+		var body := ray.get_collider()
+		if body.has_method("hit"):
+			body.hit()
+
+	flash_light.visible = true
+	flash_mesh.visible = true
+	flash_light.light_energy = randf_range(2.5, 4.5)
+	var s := randf_range(0.8, 1.4)
+	flash_mesh.scale = Vector3(s, s, s)
+	await get_tree().create_timer(0.06).timeout
+	flash_light.visible = false
+	flash_mesh.visible = false
+
+	await get_tree().create_timer(FIRE_RATE - 0.06).timeout
 	_can_fire = true
 
 # Această funcție lipsea sau era prost indentată:
