@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene format=3 uid="uid://cjwkyudte2ry2"]
 
 [ext_resource type="PackedScene" path="res://player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://target.tscn" id="2_target"]
+[ext_resource type="PackedScene" path="res://item_pickup.tscn" id="3_pickup"]
 
 [sub_resource type="Environment" id="Env_1"]
 background_mode = 1
@@ -26,20 +27,23 @@ size = Vector3(100, 6, 1)
 [sub_resource type="BoxMesh" id="WallNS_mesh"]
 size = Vector3(100, 6, 1)
 
+[sub_resource type="StandardMaterial3D" id="Wall_mat"]
+albedo_color = Color(0.28, 0.32, 0.38, 1)
+
 [sub_resource type="BoxShape3D" id="WallEW_shape"]
 size = Vector3(1, 6, 100)
 
 [sub_resource type="BoxMesh" id="WallEW_mesh"]
 size = Vector3(1, 6, 100)
 
-[sub_resource type="StandardMaterial3D" id="Wall_mat"]
-albedo_color = Color(0.28, 0.32, 0.38, 1)
-
 [sub_resource type="BoxShape3D" id="Obs1_shape"]
 size = Vector3(2, 2, 2)
 
 [sub_resource type="BoxMesh" id="Obs1_mesh"]
 size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="Obs_mat"]
+albedo_color = Color(0.38, 0.28, 0.2, 1)
 
 [sub_resource type="BoxShape3D" id="Obs2_shape"]
 size = Vector3(1, 3, 1)
@@ -53,149 +57,173 @@ size = Vector3(4, 1.5, 0.8)
 [sub_resource type="BoxMesh" id="Obs3_mesh"]
 size = Vector3(4, 1.5, 0.8)
 
-[sub_resource type="StandardMaterial3D" id="Obs_mat"]
-albedo_color = Color(0.38, 0.28, 0.2, 1)
+[node name="Main" type="Node3D" unique_id=662168620]
 
-[node name="Main" type="Node3D"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1178389047]
 environment = SubResource("Env_1")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
-rotation = Vector3(-0.785, 0.524, 0)
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1034465483]
+transform = Transform3D(0.8658247, -0.35365817, 0.3539399, 0, 0.7073882, 0.7068252, -0.50034744, -0.6119867, 0.6124742, 0, 0, 0)
 light_energy = 1.2
 shadow_enabled = true
 
-[node name="Fill" type="DirectionalLight3D" parent="."]
-rotation = Vector3(-0.3, 3.665, 0)
+[node name="Fill" type="DirectionalLight3D" parent="." unique_id=260342861]
+transform = Transform3D(-0.8661211, 0.1477111, -0.47750986, 0, 0.9553365, 0.29552022, 0.49983418, 0.2559563, -0.8274371, 0, 0, 0)
 light_energy = 0.4
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1599876204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 collision_layer = 2
-position = Vector3(0, -0.5, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1305810344]
 shape = SubResource("Floor_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1132246483]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007948875, 9.536743e-07, -0.030412674)
 mesh = SubResource("Floor_mesh")
 surface_material_override/0 = SubResource("Floor_mat")
 
-[node name="Walls" type="Node3D" parent="."]
+[node name="Walls" type="Node3D" parent="." unique_id=478313400]
 
-[node name="WallN" type="StaticBody3D" parent="Walls"]
+[node name="WallN" type="StaticBody3D" parent="Walls" unique_id=1248302561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -50)
 collision_layer = 2
-position = Vector3(0, 3, -50)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallN"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallN" unique_id=21801661]
 shape = SubResource("WallNS_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallN"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallN" unique_id=382428483]
 mesh = SubResource("WallNS_mesh")
 surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="WallS" type="StaticBody3D" parent="Walls"]
+[node name="WallS" type="StaticBody3D" parent="Walls" unique_id=64970445]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 50)
 collision_layer = 2
-position = Vector3(0, 3, 50)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallS"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallS" unique_id=1355354073]
 shape = SubResource("WallNS_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallS"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallS" unique_id=516063691]
 mesh = SubResource("WallNS_mesh")
 surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="WallE" type="StaticBody3D" parent="Walls"]
+[node name="WallE" type="StaticBody3D" parent="Walls" unique_id=623241338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 3, 0)
 collision_layer = 2
-position = Vector3(50, 3, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallE"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallE" unique_id=1317718220]
 shape = SubResource("WallEW_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallE"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallE" unique_id=323640025]
 mesh = SubResource("WallEW_mesh")
 surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="WallW" type="StaticBody3D" parent="Walls"]
+[node name="WallW" type="StaticBody3D" parent="Walls" unique_id=237006285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 3, 0)
 collision_layer = 2
-position = Vector3(-50, 3, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallW"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallW" unique_id=1772646409]
 shape = SubResource("WallEW_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallW"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallW" unique_id=11057141]
 mesh = SubResource("WallEW_mesh")
 surface_material_override/0 = SubResource("Wall_mat")
 
-[node name="Obstacles" type="Node3D" parent="."]
+[node name="Obstacles" type="Node3D" parent="." unique_id=1376879958]
 
-[node name="Obs1" type="StaticBody3D" parent="Obstacles"]
+[node name="Obs1" type="StaticBody3D" parent="Obstacles" unique_id=886702040]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -6)
 collision_layer = 2
-position = Vector3(5, 1, -6)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs1" unique_id=592094730]
 shape = SubResource("Obs1_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs1" unique_id=1282222774]
 mesh = SubResource("Obs1_mesh")
 surface_material_override/0 = SubResource("Obs_mat")
 
-[node name="Obs2" type="StaticBody3D" parent="Obstacles"]
+[node name="Obs2" type="StaticBody3D" parent="Obstacles" unique_id=1387402043]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1.5, 4)
 collision_layer = 2
-position = Vector3(-7, 1.5, 4)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs2" unique_id=349160610]
 shape = SubResource("Obs2_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs2" unique_id=771942324]
 mesh = SubResource("Obs2_mesh")
 surface_material_override/0 = SubResource("Obs_mat")
 
-[node name="Obs3" type="StaticBody3D" parent="Obstacles"]
+[node name="Obs3" type="StaticBody3D" parent="Obstacles" unique_id=1184323226]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.75, 9)
 collision_layer = 2
-position = Vector3(12, 0.75, 9)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Obs3" unique_id=1521961020]
 shape = SubResource("Obs3_shape")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Obs3" unique_id=1091407267]
 mesh = SubResource("Obs3_mesh")
 surface_material_override/0 = SubResource("Obs_mat")
 
-[node name="Targets" type="Node3D" parent="."]
+[node name="Targets" type="Node3D" parent="." unique_id=171016328]
 
-[node name="Target1" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(-8, 0.9, -10)
+[node name="Target1" parent="Targets" unique_id=1449978463 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.9, -10)
 
-[node name="Target2" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(-3, 0.9, -14)
+[node name="Target2" parent="Targets" unique_id=1270826070 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.9, -14)
 
-[node name="Target3" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(4, 0.9, -11)
+[node name="Target3" parent="Targets" unique_id=649027000 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.9, -11)
 
-[node name="Target4" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(9, 0.9, -7)
+[node name="Target4" parent="Targets" unique_id=1522342491 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.9, -7)
 
-[node name="Target5" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(-12, 0.9, 6)
+[node name="Target5" parent="Targets" unique_id=1170284131 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.9, 6)
 
-[node name="Target6" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(-4, 0.9, 5)
+[node name="Target6" parent="Targets" unique_id=457477699 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.9, 5)
 
-[node name="Target7" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(7, 0.9, 10)
+[node name="Target7" parent="Targets" unique_id=304748611 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.9, 10)
 
-[node name="Target8" parent="Targets" instance=ExtResource("2_target")]
-position = Vector3(15, 0.9, -2)
+[node name="Target8" parent="Targets" unique_id=1536274377 instance=ExtResource("2_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.9, -2)
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector3(0, 2, 0)
+[node name="Pickups" type="Node3D" parent="."]
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="Wood" parent="Pickups" instance=ExtResource("3_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.15, -3)
+item_id = "wood"
+amount = 35
+display_name = "Wood"
 
-[node name="Controls" type="Label" parent="HUD"]
+[node name="Stone" parent="Pickups" instance=ExtResource("3_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.15, 5)
+item_id = "stone"
+amount = 20
+display_name = "Stone"
+
+[node name="Scrap" parent="Pickups" instance=ExtResource("3_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.15, -4)
+item_id = "scrap"
+amount = 12
+display_name = "Scrap"
+
+[node name="Ammo" parent="Pickups" instance=ExtResource("3_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.15, 3)
+item_id = "ammo"
+amount = 24
+display_name = "Ammo"
+
+[node name="Player" parent="." unique_id=595439795 instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1072498798]
+
+[node name="Controls" type="Label" parent="HUD" unique_id=422339467]
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 720.0
 offset_bottom = 44.0
-text = "WASD: Miscare  |  Mouse: Privit  |  Click Stanga: Trage  |  Spatiu: Saritura  |  ESC: Cursor"
+text = "WASD: Miscare  |  Shift: Sprint  |  Ctrl: Crouch  |  Z: Crawl  |  E: Pickup  |  Tab/I: Inventar"
